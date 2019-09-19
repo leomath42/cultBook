@@ -5,10 +5,6 @@ Este repositório destina-se à entrega de trabalho (Programação de Software W
 Projeto CultBook:
 
 Trabalho de PSW(Programação de Software Web).
-Professor: Rafael Maiani de Mello
-
-Alunos: Reissel Reis
-		Leonardo Souza
 		
 O CultBook é uma aplicação Web para cadastrar clientes de uma biblioteca
 
