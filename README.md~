@@ -1,9 +1,4 @@
-Descrição:
-
-Este repositório destina-se à entrega de trabalho (Programação de Software Web).
-
-Projeto CultBook:
-
+-----------------------------Projeto CultBook-----------------------------------
 Trabalho de PSW(Programação de Software Web).
 Professor: Rafael Maiani de Mello
 
@@ -31,10 +26,11 @@ Requisitos:
 -	A tela de erro deve informar os campos que estão incorretos e porque estão 
 	incorretos.
 
+--------------------------------------------------------------------------------
 
-Dependências:
--	tomcat v7
+dependências:
+tomcat v7
 
 Execução da aplicação:
-
+---------------------
 
