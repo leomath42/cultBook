@@ -3,11 +3,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%
+	Boolean error = (Boolean) request.getAttribute("invalidLogin");
+%>
 <meta charset="ISO-8859-1">
 <title>Login</title>
 <style><%@include file="/view/css/login.css"%></style>
 </head>
 <body>
+	<%if(error!= null && error) {
+		out.println("Usuário ou login inválido");
+		request.setAttribute("invalidLogin", false);
+	}
+	%>
 	<form action="ValidarLoginServlet" method="post">
 		Login:
 		<input type="text" name="login"><br>
