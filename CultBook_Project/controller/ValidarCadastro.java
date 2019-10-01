@@ -1,11 +1,6 @@
 
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import classes.Usuario;
 
 /**
  * Servlet implementation class ValidarCadastro
@@ -53,6 +50,7 @@ public class ValidarCadastro extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
@@ -99,10 +97,12 @@ public class ValidarCadastro extends HttpServlet {
 			HttpSession session = request.getSession(false); // não irá criar uma nova sessão !
 			
 			//adicionado a sessao, pode ser recuperado pelo ValidarLoginServlet
-			List<Usuario>  listaDeUsuario = (List<Usuario>) session.getAttribute("listaDeUsuario"); 
-			listaDeUsuario.add(user);
+			Set<Usuario>  listaDeUsuario = (Set<Usuario>) session.getAttribute("listaDeUsuario"); 
+			if(!(listaDeUsuario == null))
+				listaDeUsuario.add(user);
 			//voltando para o menuInicial.jsp ou para login.jsp.
-
+			
+			/*Irei jogar o usuário direto para a tela de menu*/
 			RequestDispatcher rd2 = request.getRequestDispatcher("view/menuInicial.jsp");
 			rd2.forward(request, response);
 			

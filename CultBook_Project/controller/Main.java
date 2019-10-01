@@ -1,10 +1,9 @@
 
 
+
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,13 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import classes.Usuario;
+
 /**
  * Servlet implementation class MainServlet
  */
 @WebServlet("/Main")
 public class Main extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	HttpSession session = null;   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -34,10 +35,20 @@ public class Main extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		List<Usuario> listaDeUsuario = new ArrayList<Usuario>();
+		Set<Usuario> listaDeUsuario = new HashSet<Usuario>();
 		
-		HttpSession session = request.getSession();
-		session.setAttribute("listaDeUsuario", listaDeUsuario);
+		if(session == null) {
+			session = request.getSession();
+			/*Irei inserir a persistência da lista de usuários aqui
+			 * deixei session.settribute por enquanto::
+			 * */
+			session.setAttribute("listaDeUsuario", listaDeUsuario);
+		}
+		else {
+			//session.setAttribute("listaDeUsuario", listaDeUsuario);
+		}
+		
+
 		
 		RequestDispatcher rd = request.getRequestDispatcher("view/menuInicial.jsp");
 		rd.forward(request, response);
@@ -54,6 +65,8 @@ public class Main extends HttpServlet {
 		
 		if( !(login == null || login.equals(null))) {
 			System.out.println("login");
+			RequestDispatcher rd = request.getRequestDispatcher("view/login.jsp");
+			rd.forward(request, response);
 		}
 		else if( !(novaConta == null || novaConta.equals(null))) {
 			System.out.println("new accont");

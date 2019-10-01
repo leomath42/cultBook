@@ -1,9 +1,7 @@
 
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -54,6 +52,7 @@ public class ControlBookServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void addBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int ISBN = Integer.valueOf(request.getParameter("ISBN"));
 		String Titulo = (String) request.getParameter("Titulo");
@@ -79,6 +78,7 @@ public class ControlBookServlet extends HttpServlet {
 		rd.forward(request, response);
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void delBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int ISBN = Integer.valueOf(request.getParameter("ISBN"));
 		

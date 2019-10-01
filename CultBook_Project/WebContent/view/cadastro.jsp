@@ -13,7 +13,7 @@
 			nome: <input type="text" name="nome"><br><br>
 			email: <input type="text" name="email"><br><br>
 			telefone: <input type="text" name="telefone"><br><br>
-			endereço: <input type="text" name="endereco"><br><br>
+			endereco: <input type="text" name="endereco"><br><br>
 			senha: <input type="password" name="senha"><br><br>
 			confirmar senha: <input type="password" name="confirmarSenha"><br><br>
 			<button type="submit" name="confirmar" value="confirmarButton">confirmar</button>
