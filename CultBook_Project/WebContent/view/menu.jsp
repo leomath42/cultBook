@@ -6,6 +6,8 @@
 <meta charset="ISO-8859-1">
 <% String user = (String) request.getSession().getAttribute("login"); 
    String adicionado = (String) request.getAttribute("adicionado");
+   String deletado = (String) request.getAttribute("deletado");
+   String existente = (String) request.getAttribute("existente");
 %>
 <title>Menu Principal</title>
 <style><%@include file="/view/css/menu.css"%></style>
@@ -18,6 +20,10 @@
 	<%
 	if(adicionado != null) {
 		out.println(adicionado);
+	}else if(deletado != null) {
+		out.println(deletado);
+	}else if(existente != null) {
+		out.println(existente);
 	}
 	%>
 	</p>
