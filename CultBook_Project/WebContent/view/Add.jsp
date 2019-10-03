@@ -2,6 +2,9 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
+<head>
+<style><%@include file="/view/css/login.css"%></style>
+</head>
 <body>
 	
 	<form action="ControlBookServlet" method="post">
