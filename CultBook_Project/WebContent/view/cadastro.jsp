@@ -5,6 +5,7 @@
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>Tela de cadastro do CultBook</title>
+		<style><%@include file="/view/css/cadastro.css"%></style>
 	</head>
 	<body>
 		<h1>Insira seus dados:</h1>
@@ -16,13 +17,19 @@
 			endereco: <input type="text" name="endereco"><br><br>
 			senha: <input type="password" name="senha"><br><br>
 			confirmar senha: <input type="password" name="confirmarSenha"><br><br>
-			<button type="submit" name="confirmar" value="confirmarButton">confirmar</button>
+			<button type="submit" name="confirmar" value="confirmarButton">Confirmar</button>
 			
 			<%  if(request.getAttribute("erroCampoVazio") != null && request.getAttribute("erroCampoVazio").equals("true")){
-					out.print("<br><br><h1> Preencha todos os campos. </h1>");
+					out.print("<h1> Preencha todos os campos. </h1><br>");
 				}
-				else if(request.getAttribute("erroSenha") != null && request.getAttribute("erroSenha").equals("true")){ 
-					out.print("<br><br><h1> Senha não corresponde ou possui tamanho menor que 8.</h1>");
+				if(request.getAttribute("erroSenha") != null){ 
+					out.print("<p>"+request.getAttribute("erroSenha")+"<p>");
+				}
+				if(request.getAttribute("erroUser") != null){ 
+					out.print("<p>"+request.getAttribute("erroUser")+"<p>");
+				}
+				if(request.getAttribute("camposVazios") != null){ 
+					out.print("<p>"+request.getAttribute("camposVazios")+"<p>");
 				}
 			%>
 		</form>	

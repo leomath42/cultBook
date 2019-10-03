@@ -62,16 +62,25 @@ public class ControlBookServlet extends HttpServlet {
 		String autor = (String) request.getParameter("autor");
 		Book book = new Book(ISBN, Titulo, ano, edicao, editora, autor);
 		
-		if(request.getSession().getAttribute("books") == null) {
+		if(request.getSession().getAttribute("books") != null) {
+			List<Book> books = (ArrayList<Book>) request.getSession().getAttribute("books");
+			List isbns = new ArrayList();
+			for (Book book2 : books) {
+				isbns.add(book2.getISBN());
+			}
+			if(!isbns.contains(ISBN)) {
+				books.add(book);
+				request.getSession().setAttribute("books", books);
+				request.setAttribute("adicionado", "Livro Adicionado com Sucesso!");
+			}
+			else
+				request.setAttribute("existente", "Livro já existe!");
+
+		} else {
 			List<Book> books = new ArrayList<Book>();
 			books.add(book);
 			request.getSession().setAttribute("books", books);
-			request.setAttribute("adicionado", "Livro Adicionado com Sucesso!");
-		} else {
-			List<Book> books = (ArrayList<Book>) request.getSession().getAttribute("books");
-			books.add(book);
-			request.getSession().setAttribute("books", books);
-			request.setAttribute("adicionado", "Livro Adicionado com Sucesso!");
+			request.setAttribute("adicionado", "Livro adicionado com Sucesso!");
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher("view/menu.jsp");  
@@ -95,6 +104,7 @@ public class ControlBookServlet extends HttpServlet {
 			}
 			books.removeAll(toRemove);
 			request.getSession().setAttribute("books", books);
+			request.setAttribute("adicionado", "Livro removido com Sucesso!");
 		}
 		RequestDispatcher rd = request.getRequestDispatcher("view/menu.jsp");  
 		rd.forward(request, response);

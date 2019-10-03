@@ -53,46 +53,22 @@ public class ValidarCadastro extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		try {
-			login = request.getParameter("login").equals(null) ? "" : request.getParameter("login");
-			nome = request.getParameter("nome").equals(null) ? "" : request.getParameter("nome");
-			email = request.getParameter("email").equals(null) ? "" : request.getParameter("email");
-			telefone = request.getParameter("telefone").equals(null) ? "" : request.getParameter("telefone");
-			endereco = request.getParameter("endereco").equals(null) ? "" : request.getParameter("endereco");
-			senha = request.getParameter("senha").equals(null) ? "" : request.getParameter("senha");
-			confirmarSenha = request.getParameter("confirmarSenha").equals(null) ? "" : request.getParameter("confirmarSenha");
+		login = request.getParameter("login").equals(null) ? "" : request.getParameter("login");
+		nome = request.getParameter("nome").equals(null) ? "" : request.getParameter("nome");
+		email = request.getParameter("email").equals(null) ? "" : request.getParameter("email");
+		telefone = request.getParameter("telefone").equals(null) ? "" : request.getParameter("telefone");
+		endereco = request.getParameter("endereco").equals(null) ? "" : request.getParameter("endereco");
+		senha = request.getParameter("senha").equals(null) ? "" : request.getParameter("senha");
+		confirmarSenha = request.getParameter("confirmarSenha").equals(null) ? "" : request.getParameter("confirmarSenha");
 
-		}catch (Exception e) {
-			// TODO: handle exception
-		}
-			
-	
-		
 		if(verificaCampoVazio(new String[]{login, nome, email, telefone, senha, confirmarSenha})) {
-			System.out.println("Existem itens vazios !!!");
-			
-//			try{
-//				throw new Exception("Existem itens vazios !!!");
-//			}
-//			catch (Exception e) {
-//				// TODO: handle exception
-//				e.printStackTrace();
-//			}
-			request.setAttribute("erroCampoVazio", "true");
-			RequestDispatcher rd = request.getRequestDispatcher("view/cadastro.jsp");
-			rd.include(request, response);
+			request.setAttribute("camposVazios", "Existem campos nao preenchidos!");
 		}
-		
-		if(verificaSenha(senha, confirmarSenha)) {
-			request.setAttribute("erroSenha", "true");
-			RequestDispatcher rd = request.getRequestDispatcher("view/cadastro.jsp");
-			if(request.getAttribute("erroCampoVazio") == null)
-				rd.include(request, response);
-		}
-		else 
-		{
-		
+
+		request.setAttribute("erroSenha", verificaSenha(senha, confirmarSenha,login));
+		request.setAttribute("erroUser", verificaUsuario(nome, email));
+
+		if(request.getAttribute("erroSenha").equals("") && request.getAttribute("erroUser").equals("") && request.getAttribute("camposVazios") == null) {
 			Usuario user = new Usuario(login, nome, email, telefone, endereco, senha);
 			HttpSession session = request.getSession(false); // não irá criar uma nova sessão !
 			
@@ -101,25 +77,55 @@ public class ValidarCadastro extends HttpServlet {
 			if(!(listaDeUsuario == null))
 				listaDeUsuario.add(user);
 			//voltando para o menuInicial.jsp ou para login.jsp.
-			
+			request.setAttribute("validUser", user.getNome());
 			/*Irei jogar o usuário direto para a tela de menu*/
 			RequestDispatcher rd2 = request.getRequestDispatcher("view/menuInicial.jsp");
 			rd2.forward(request, response);
-			
 		}
-	
-		
+//		RequestDispatcher rd = request.getRequestDispatcher("view/cadastro.jsp");
+//		rd.forward(request, response);		
 	}
 	
-	private boolean verificaSenha(String senha, String confirmarSenha) {
+	private String verificaUsuario(String nome, String email) {
+		//verifica as informacoes do usuario
+		String errosUser = "";
+		if(nome.split(" ").length < 2) {
+			String erroUser = "Campo Nome deve ter no minimo um sobrenome!<br>";
+			errosUser += erroUser;
+		}
+		if(!email.contains("@")) {
+			String erroUser = "Email invalido, @ nao encontrado!<br>";
+			errosUser += erroUser;
+		}
+		if(errosUser != null) {
+			return errosUser;
+		}
+		return null;
+	}
+
+	private String verificaSenha(String senha, String confirmarSenha, String login) {
 		//verifica a senha de acordo com os requisitos do projeto.
-		if(senha == null || senha.equals("") || !senha.equals(confirmarSenha)) {
-			return true;
+		String erros = "";
+		if(senha == null || senha.equals("")) {
+			String erro = "Campo de senha vazio!<br>";
+			erros += erro;
 		}
-		else if(senha.length() <= 8) {
-			return true;
+		if (!senha.equals(confirmarSenha)) {
+			String erro = "\nConfirmação da senha é diferente da senha!<br>";
+			erros += erro;
 		}
-		return false;
+		if(senha.length() < 6 || senha.length() > 10) {
+			String erro = "\nSenha deve ter de 6 a 10 caracteres!<br>";
+			erros += erro;
+		}
+		if(senha == login) {
+			String erro = "Senha não pode ser igual ao login!<br>";
+			erros += erro;
+		}
+		if(erros != null) {
+			return erros;
+		}
+		return null;
 	}
 	
 	private boolean verificaCampoVazio(String[] args) {

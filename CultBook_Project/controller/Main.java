@@ -69,7 +69,7 @@ public class Main extends HttpServlet {
 			rd.forward(request, response);
 		}
 		else if( !(novaConta == null || novaConta.equals(null))) {
-			System.out.println("new accont");
+			System.out.println("new account");
 			RequestDispatcher rd = request.getRequestDispatcher("view/cadastro.jsp");
 			rd.forward(request, response);
 		}
