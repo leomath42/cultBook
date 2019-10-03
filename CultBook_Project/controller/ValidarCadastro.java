@@ -70,7 +70,7 @@ public class ValidarCadastro extends HttpServlet {
 
 		if(request.getAttribute("erroSenha").equals("") && request.getAttribute("erroUser").equals("") && request.getAttribute("camposVazios") == null) {
 			Usuario user = new Usuario(login, nome, email, telefone, endereco, senha);
-			HttpSession session = request.getSession(false); // n„o ir· criar uma nova sess„o !
+			HttpSession session = request.getSession(false); // n√£o ir√° criar uma nova sess√£o !
 			
 			//adicionado a sessao, pode ser recuperado pelo ValidarLoginServlet
 			Set<Usuario>  listaDeUsuario = (Set<Usuario>) session.getAttribute("listaDeUsuario"); 
@@ -78,12 +78,14 @@ public class ValidarCadastro extends HttpServlet {
 				listaDeUsuario.add(user);
 			//voltando para o menuInicial.jsp ou para login.jsp.
 			request.setAttribute("validUser", user.getNome());
-			/*Irei jogar o usu·rio direto para a tela de menu*/
+			/*Irei jogar o usu√°rio direto para a tela de menu*/
 			RequestDispatcher rd2 = request.getRequestDispatcher("view/menuInicial.jsp");
 			rd2.forward(request, response);
 		}
-//		RequestDispatcher rd = request.getRequestDispatcher("view/cadastro.jsp");
-//		rd.forward(request, response);		
+		else{
+			RequestDispatcher rd = request.getRequestDispatcher("view/cadastro.jsp");
+			rd.forward(request, response);			
+		}
 	}
 	
 	private String verificaUsuario(String nome, String email) {
@@ -111,7 +113,7 @@ public class ValidarCadastro extends HttpServlet {
 			erros += erro;
 		}
 		if (!senha.equals(confirmarSenha)) {
-			String erro = "\nConfirmaÁ„o da senha È diferente da senha!<br>";
+			String erro = "\nConfirma√ß√£o da senha √© diferente da senha!<br>";
 			erros += erro;
 		}
 		if(senha.length() < 6 || senha.length() > 10) {
@@ -119,7 +121,7 @@ public class ValidarCadastro extends HttpServlet {
 			erros += erro;
 		}
 		if(senha == login) {
-			String erro = "Senha n„o pode ser igual ao login!<br>";
+			String erro = "Senha n√£o pode ser igual ao login!<br>";
 			erros += erro;
 		}
 		if(erros != null) {
