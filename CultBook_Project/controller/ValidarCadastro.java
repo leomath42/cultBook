@@ -1,5 +1,12 @@
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
@@ -74,16 +81,34 @@ public class ValidarCadastro extends HttpServlet {
 			
 			//adicionado a sessao, pode ser recuperado pelo ValidarLoginServlet
 			Set<Usuario>  listaDeUsuario = (Set<Usuario>) session.getAttribute("listaDeUsuario"); 
-			if(!(listaDeUsuario == null))
+			if(!(listaDeUsuario == null)) {
 				listaDeUsuario.add(user);
+				
+				try {
+//					String path = (String) session.getAttribute("path");
+					FileOutputStream fileOutput = new FileOutputStream(new File("users.dat"));
+					ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
+					
+					objectOutput.writeObject(listaDeUsuario);
+					
+					objectOutput.close();
+				}
+				catch (FileNotFoundException e) {
+					
+				}
+				
+			}
 			//voltando para o menuInicial.jsp ou para login.jsp.
 			request.setAttribute("validUser", user.getNome());
 			/*Irei jogar o usuário direto para a tela de menu*/
 			RequestDispatcher rd2 = request.getRequestDispatcher("view/menuInicial.jsp");
 			rd2.forward(request, response);
 		}
-//		RequestDispatcher rd = request.getRequestDispatcher("view/cadastro.jsp");
-//		rd.forward(request, response);		
+		else {
+			RequestDispatcher rd = request.getRequestDispatcher("view/cadastro.jsp");
+			rd.forward(request, response);		
+		}
+		
 	}
 	
 	private String verificaUsuario(String nome, String email) {
